@@ -3,20 +3,26 @@ const clueHoldTime = 1000; //1000ms = 1s, time that each clue is sustained
 const cluePauseTime = 333; //Time in between clues
 const nextClueWaitTime = 1000; //how long to wait before starting playback of the clue sequence
 
-
 //global variables
-var pattern = [1, 2, 3, 4, 2, 1, 3, 4];
+var pattern = [6, 4, 8, 1, 6, 3, 8, 5, 2, 7];
 var progress = 0; //can be used to keep track of the pattern
 var gamePlaying = false; //to keep track of if the game is ongoing or not
 var tonePlaying = false; //to keep track of if a sound is being played or not
 var volume = 0.5; //must be btwn 0.0 and 1.0
 var guessCounter = 0; //keeps track of player's progress
-
+var lives = 0; //to keep track of lives
 
 function startGame(){
   //initialization
   progress = 0;
   gamePlaying = true;
+  lives = 2; //3 lives, gameover on 3rd mistake
+  document.getElementById("counter").innerHTML = lives + 1;
+  
+  //randomize pattern
+  for(let i = 0; i < pattern.length; i++){
+    pattern[i] = Math.floor(Math.random() * 8) + 1; //random number between 1-8
+  }
   
   //swap start and stop buttons
   document.getElementById("startBtn").classList.add("hidden")
@@ -29,6 +35,7 @@ function stopGame(){
   gamePlaying = false;
   document.getElementById("stopBtn").classList.add("hidden")
   document.getElementById("startBtn").classList.remove("hidden")
+  document.getElementById("counter").innerHTML = "";
 }
 
 
@@ -44,9 +51,11 @@ function clearButton(btn) {
 
 function playSingleClue(btn){
   if(gamePlaying) {
+    let delay = clueHoldTime;
+    delay -= (progress + 1) * 75;
     lightButton(btn);
-    playTone(btn, clueHoldTime);
-    setTimeout(clearButton, clueHoldTime, btn);
+    playTone(btn, delay);
+    setTimeout(clearButton, delay, btn);
   }
 }
 function playClueSequence(){
@@ -55,6 +64,7 @@ function playClueSequence(){
   let delay = nextClueWaitTime;
   for(let i = 0; i <= progress; i++) {
     console.log("play single clue: " + pattern[i] + " in " + delay + "ms")
+    delay -= (progress + 1) * 75;
     setTimeout(playSingleClue, delay, pattern[i])
     delay += clueHoldTime;
     delay += cluePauseTime;
@@ -69,7 +79,14 @@ function guess(btn){
   
   //game logic
   if(btn != pattern[guessCounter]){ //if guess is incorrect
-    loseGame(); //guess is wrong, game is lost
+    document.getElementById("counter").innerHTML = lives;
+    if(lives != 0){
+      lives--;
+      playClueSequence();
+    }
+    else{
+      setTimeout(function(){loseGame()}, 333); //guess is wrong, game is lost
+    }
   }
   else{
     if(guessCounter != progress){ //if turn is ongoing
@@ -100,9 +117,13 @@ function loseGame(){
 const freqMap = {
   //each button has a unique frequency
   1: 130,//261.6,
-  2: 230,//329.6,
-  3: 330,//392,
-  4: 430//466.2
+  2: 180,//329.6,
+  3: 230,//392,
+  4: 280,//466.2
+  5: 330,
+  6: 380,
+  7: 430,
+  8: 480
 }
 function playTone(btn,len){ 
   o.frequency.value = freqMap[btn]
