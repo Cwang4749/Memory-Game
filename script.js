@@ -12,12 +12,21 @@ var volume = 0.5; //must be btwn 0.0 and 1.0
 var guessCounter = 0; //keeps track of player's progress
 var lives = 0; //to keep track of lives
 
+//var for countdown timer
+var timeLeft = 15;
+var timeOn = false;
+var myInterval;
+
 function startGame(){
   //initialization
   progress = 0;
   gamePlaying = true;
   lives = 2; //3 lives, gameover on 3rd mistake
   document.getElementById("counter").innerHTML = lives + 1;
+  
+  //reset timer
+  timeLeft = 15;
+  document.getElementById("timeDisplay").innerHTML = timeLeft;
   
   //randomize pattern
   for(let i = 0; i < pattern.length; i++){
@@ -36,6 +45,12 @@ function stopGame(){
   document.getElementById("stopBtn").classList.add("hidden")
   document.getElementById("startBtn").classList.remove("hidden")
   document.getElementById("counter").innerHTML = "";
+  
+  //timer related changes
+  document.getElementById("timeDisplay").innerHTML = 15;
+  timeOn = false;
+  window.clearInterval(myInterval);
+  resetTime();
 }
 
 
@@ -58,46 +73,68 @@ function playSingleClue(btn){
     setTimeout(clearButton, delay, btn);
   }
 }
-function playClueSequence(){
+function playClueSequence() {
   guessCounter = 0;
-  
+
   let delay = nextClueWaitTime;
-  for(let i = 0; i <= progress; i++) {
-    console.log("play single clue: " + pattern[i] + " in " + delay + "ms")
-    delay -= (progress + 1) * 75;
-    setTimeout(playSingleClue, delay, pattern[i])
+  delay = delay * 4;
+  delay = delay/5;
+  let timerDelay = delay;
+  for (let i = 0; i <= progress; i++) {
+    console.log("play single clue: " + pattern[i] + " in " + delay + "ms");
+    setTimeout(playSingleClue, delay, pattern[i]);
     delay += clueHoldTime;
     delay += cluePauseTime;
   }
+  timeOn = true;
+  let buffer = clueHoldTime + cluePauseTime;
+  buffer = buffer * progress;
+  timerDelay = timerDelay + buffer;
+  setTimeout(function(){timer()}, timerDelay);
 }
 
-function guess(btn){
+function guess(btn) {
   console.log("user guessed: " + btn);
-  if(!gamePlaying){ //start button not pressed
+  if (!gamePlaying) {
+    //start button not pressed
     return;
   }
   
   //game logic
-  if(btn != pattern[guessCounter]){ //if guess is incorrect
+  if (btn != pattern[guessCounter]) {
+    //if guess is incorrect
+    
+    //resets timer for next attempt
+    timeOn = false;
+    window.clearInterval(myInterval);
+    resetTime();
+    
     document.getElementById("counter").innerHTML = lives;
-    if(lives != 0){
+    if (lives != 0) {
       lives--;
       playClueSequence();
+    } else {
+      setTimeout(function() {
+        loseGame();
+      }, 333); //guess is wrong, game is lost
     }
-    else{
-      setTimeout(function(){loseGame()}, 333); //guess is wrong, game is lost
-    }
-  }
-  else{
-    if(guessCounter != progress){ //if turn is ongoing
+  } else {
+    if (guessCounter != progress) {
+      //if turn is ongoing
       guessCounter++; //game continues, check next guess
-    }
-    else{ //turn is over
-      if(progress != pattern.length - 1){ //if progress has yet to reach the end of the pattern array
+    } else {
+      //turn is over
+      
+      //resets timer for next turn
+      timeOn = false;
+      window.clearInterval(myInterval);
+      resetTime();
+      
+      if (progress != pattern.length - 1) {
+        //if progress has yet to reach the end of the pattern array
         progress++;
         playClueSequence();
-      }
-      else{
+      } else {
         winGame(); //game is won
       }
     }
@@ -111,6 +148,27 @@ function winGame(){
 function loseGame(){
   stopGame();
   alert("Game over. You Lost.");
+}
+
+//timer functions
+function resetTime() {
+        timeLeft = 15;
+      document.getElementById("timeDisplay").innerHTML = timeLeft;
+}
+function timer() {
+  myInterval = setInterval(function(){
+    
+    if(timeLeft > 0 && timeOn) {
+      timeLeft -= 1;
+      document.getElementById("timeDisplay").innerHTML = timeLeft;
+    }
+    else {
+      loseGame();
+      window.clearInterval(myInterval)
+      //clearInterval(myInterval)
+    }
+    
+  }, 1000)
 }
 
 // Sound Synthesis Functions
