@@ -4,7 +4,7 @@
 
 Submitted by: **Calvin Wang**
 
-Time spent: **7** hours spent in total
+Time spent: **10** hours spent in total
 
 Link to project: [https://classic-memory-game.glitch.me](https://classic-memory-game.glitch.me)
 
@@ -30,7 +30,7 @@ The following **optional** features are implemented:
 * [x] Player only loses after 3 mistakes (instead of on the first mistake)
 * [x] Game button appearance change goes beyond color (e.g. add an image)
 * [ ] Game button sound is more complex than a single tone (e.g. an audio file, a chord, a sequence of multiple tones)
-* [ ] User has a limited amount of time to enter their guess on each turn
+* [x] User has a limited amount of time to enter their guess on each turn
 
 The following **additional** features are implemented:
 
@@ -39,8 +39,15 @@ The following **additional** features are implemented:
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
+
+3 lives, losing the game, start/stop:
 ![](https://cdn.glitch.com/e7673312-01b1-4a95-a63e-5ce3140ce64f%2FMemoryGameDemoPt1.gif?v=1615065811182)
+
+Winning the game and game speeds up:
 ![](https://cdn.glitch.com/e7673312-01b1-4a95-a63e-5ce3140ce64f%2FMemoryGameDemoPt2.gif?v=1615065919674)
+
+Countdown Timer:
+![](https://cdn.glitch.com/e7673312-01b1-4a95-a63e-5ce3140ce64f%2FMemoryGameDemoPt3.gif?v=1615760289497)
 
 ## Reflection Questions
 1. If you used any outside resources to help complete your submission (websites, books, people, etc) list them here. 
@@ -52,13 +59,15 @@ did not require much proficiency with Javascript or HTML, it was harder to make 
 Without the guide of tutorials and using only my elementary understanding of Javascript and HTML, I was facing difficulty implementing
 certain features. For example, in the process of using images as backgrounds for
 the buttons, I had to first search for information regarding buttons. After discovering that buttons had an element: background-image,
-it suddenly became much clearer how to customize the buttons. In addition, for the complex button sounds feature, it soon became clear
+it suddenly became much clearer how to customize the buttons. Also, without learning about the setInterval function, a lot of experimenting
+was done in order to implement the timer feature. This is especially so, in regards to having a timer that reacts to the game logic:
+such as reseting between turns, reseting when lives are lost, etc. In the end, I was able to refer to multiple walkthrough videos about
+timers in order to get enough of an understanding about setInterval before experimenting with it and then finally succeeding. 
+Lastly, for the complex button sounds feature, it soon became clear
 to me that I lacked understanding regarding the copy paste snippet provided from the tutorial: startTone() and stopTone(). Although I was
 able to successfully put the sounds into the game and it works properly with the clue sequences, but it simply would not play indefinitely
 when the user continues clicking on the button. Currently I am still working on this issue and will hopefully find my answer through online
-resources such as videos, tutorials, or possibly online forums. I'm experiencing a similar issue in the iOS course from CodePath, because
-there are times when the guides just provide us code snippets that we just have to trust in without fully understanding their uses. An example
-would be the API caller for the Twitter app.] 
+resources such as videos, tutorials, or possibly online forums.] 
 
 3. What questions about web development do you have after completing your submission? (recommended 100 - 300 words) 
 [My biggest question regarding web development is: where is all the data coming from? Not including the built in
@@ -71,7 +80,7 @@ how do games that are embedded into the page work?]
 
 4. If you had a few more hours to work on this project, what would you spend them doing (for example: refactoring certain functions, adding additional features, etc). Be specific. (recommended 100 - 300 words) 
 [If I had more time to work on this project, I would spend my time looking into how to implement certain features
-such as user customization of the buttons, user selected difficulty, a timer, an option to enter a name and a ranking system
+such as user customization of the buttons, user selected difficulty, an option to enter a name and a ranking system
 These features are more targeted at improving user experience. In terms of the timer and ranking system, it would be used
 to rank players based on their progress through the game. On a technical level, I assume I would have to learn more about
 storing data into servers such that the rankings are preserved even after the user has exited the session. Something else
