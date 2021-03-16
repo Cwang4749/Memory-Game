@@ -17,6 +17,25 @@ var timeLeft = 15;
 var timeOn = false;
 var myInterval;
 
+//audio setup
+var currTone;
+var flute1 = document.getElementById("flute1");
+flute1.loop = true;
+var flute2 = document.getElementById("flute2");
+flute2.loop = true;
+var piano1 = document.getElementById("piano1");
+piano1.loop = true;
+var piano2 = document.getElementById("piano2");
+piano2.loop = true;
+var zither1 = document.getElementById("zither?1");
+zither1.loop = true;
+var zither2 = document.getElementById("zither?2");
+zither2.loop = true;
+var zither3 = document.getElementById("zither?3");
+zither3.loop = true;
+var kalimba = document.getElementById("kalimba");
+kalimba.loop = true;
+
 function startGame(){
   //initialization
   progress = 0;
@@ -171,44 +190,80 @@ function timer() {
   }, 1000)
 }
 
-// Sound Synthesis Functions
+//audio functions
 const freqMap = {
-  //each button has a unique frequency
-  1: 130,//261.6,
-  2: 180,//329.6,
-  3: 230,//392,
-  4: 280,//466.2
-  5: 330,
-  6: 380,
-  7: 430,
-  8: 480
-}
-function playTone(btn,len){ 
-  o.frequency.value = freqMap[btn]
-  g.gain.setTargetAtTime(volume,context.currentTime + 0.05,0.025)
-  tonePlaying = true
-  setTimeout(function(){
-    stopTone()
-  },len)
-}
-function startTone(btn){
-  if(!tonePlaying){
-    o.frequency.value = freqMap[btn]
-    g.gain.setTargetAtTime(volume,context.currentTime + 0.05,0.025)
-    tonePlaying = true
-  }
-}
-function stopTone(){
-    g.gain.setTargetAtTime(0,context.currentTime + 0.05,0.025)
-    tonePlaying = false
+      //each button has a unique frequency
+      1: zither3, //261.6,
+      2: zither2, //329.6,
+      3: zither1, //392,
+      4: piano2, //466.2
+      5: flute2,
+      6: piano1,
+      7: flute1,
+      8: kalimba
+};
+
+function playTone(btn, len) {
+  currTone = freqMap[btn];
+  currTone.play();
+  tonePlaying = true;
+  setTimeout(function() {
+    stopTone();
+  }, len);
 }
 
-//Page Initialization
-// Init Sound Synthesizer
-var context = new AudioContext()
-var o = context.createOscillator()
-var g = context.createGain()
-g.connect(context.destination)
-g.gain.setValueAtTime(0,context.currentTime)
-o.connect(g)
-o.start(0)
+function startTone(btn) {
+  if(!tonePlaying) {
+    currTone = freqMap[btn];
+    currTone.play().setTargetAtTime(0.5, currTone.currentTime + 0.05, 0.0025);
+    tonePlaying = true;
+  }
+}
+function stopTone() {
+  currTone.pause();
+  currTone.currentTime = 0;
+  tonePlaying = false;
+}
+
+
+// // Sound Synthesis Functions
+// const freqMap = {
+//   //each button has a unique frequency
+//   1: 130,//261.6,
+//   2: 180,//329.6,
+//   3: 230,//392,
+//   4: 280,//466.2
+//   5: 330,
+//   6: 380,
+//   7: 430,
+//   8: 480
+// }
+// function playTone(btn,len){ 
+//   o.frequency.value = freqMap[btn]
+//   g.gain.setTargetAtTime(volume,context.currentTime + 0.05,0.025)
+//   tonePlaying = true
+//   setTimeout(function(){
+//     stopTone()
+//   },len)
+// }
+// function startTone(btn){
+//   if(!tonePlaying){
+//     o.frequency.value = freqMap[btn]
+//     g.gain.setTargetAtTime(volume,context.currentTime + 0.05,0.025)
+//     tonePlaying = true
+//   }
+// }
+// function stopTone(){
+//     g.gain.setTargetAtTime(0,context.currentTime + 0.05,0.025)
+//     tonePlaying = false
+// }
+
+// //Page Initialization
+// // Init Sound Synthesizer
+// var context = new AudioContext()
+// var o = context.createOscillator()
+// var g = context.createGain()
+// g.connect(context.destination)
+// g.gain.setValueAtTime(0,context.currentTime)
+// o.connect(g)
+// o.start(0)

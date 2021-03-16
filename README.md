@@ -4,7 +4,7 @@
 
 Submitted by: **Calvin Wang**
 
-Time spent: **10** hours spent in total
+Time spent: **13** hours spent in total
 
 Link to project: [https://classic-memory-game.glitch.me](https://classic-memory-game.glitch.me)
 
@@ -29,7 +29,7 @@ The following **optional** features are implemented:
 * [x] Computer picks a different pattern each time the game is played
 * [x] Player only loses after 3 mistakes (instead of on the first mistake)
 * [x] Game button appearance change goes beyond color (e.g. add an image)
-* [ ] Game button sound is more complex than a single tone (e.g. an audio file, a chord, a sequence of multiple tones)
+* [x] Game button sound is more complex than a single tone (e.g. an audio file, a chord, a sequence of multiple tones)
 * [x] User has a limited amount of time to enter their guess on each turn
 
 The following **additional** features are implemented:
@@ -66,8 +66,9 @@ timers in order to get enough of an understanding about setInterval before exper
 Lastly, for the complex button sounds feature, it soon became clear
 to me that I lacked understanding regarding the copy paste snippet provided from the tutorial: startTone() and stopTone(). Although I was
 able to successfully put the sounds into the game and it works properly with the clue sequences, but it simply would not play indefinitely
-when the user continues clicking on the button. Currently I am still working on this issue and will hopefully find my answer through online
-resources such as videos, tutorials, or possibly online forums.] 
+when the user continues clicking on the button. After isolating the audio component by copying it into a new glitch project, I was able to
+experiment and combine new knowledge gained from online research in order to successfully complete the complex audio optional feature. It
+took a lot of research and testing before I was able to integrate the audio files into the project and have it behave appropriately.] 
 
 3. What questions about web development do you have after completing your submission? (recommended 100 - 300 words) 
 [My biggest question regarding web development is: where is all the data coming from? Not including the built in
@@ -81,7 +82,7 @@ how do games that are embedded into the page work?]
 4. If you had a few more hours to work on this project, what would you spend them doing (for example: refactoring certain functions, adding additional features, etc). Be specific. (recommended 100 - 300 words) 
 [If I had more time to work on this project, I would spend my time looking into how to implement certain features
 such as user customization of the buttons, user selected difficulty, an option to enter a name and a ranking system
-These features are more targeted at improving user experience. In terms of the timer and ranking system, it would be used
+These features are more targeted at improving user experience. In terms of the ranking system, it would be used
 to rank players based on their progress through the game. On a technical level, I assume I would have to learn more about
 storing data into servers such that the rankings are preserved even after the user has exited the session. Something else
 I could do would be to comment out my code and rebuild everything from scratch except using different methods to achieve
